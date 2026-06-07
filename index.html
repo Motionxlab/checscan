@@ -553,14 +553,15 @@
 
     <div class="section" style="margin-top: 16px;">
       <div class="section-label">Фото чека</div>
-      <div class="upload-zone" id="upload-zone">
-        <input type="file" accept="image/*" id="file-input">
+      <div class="upload-zone" id="upload-zone" style="cursor:pointer;">
         <span class="upload-icon">📸</span>
         <h3>Сфотографировать чек</h3>
         <p>Или загрузить из галереи</p>
         <img class="preview-img" id="preview-img" style="display:none">
         <button class="remove-photo" id="remove-photo" style="display:none" type="button">✕</button>
       </div>
+      <!-- Hidden inputs outside the zone -->
+      <input type="file" accept="image/*" id="file-input" style="position:absolute;left:-9999px;opacity:0;width:1px;height:1px;">
     </div>
 
     <div class="section" style="margin-top: 16px;">
@@ -689,6 +690,13 @@
   const previewImg = document.getElementById('preview-img');
   const removePhoto = document.getElementById('remove-photo');
 
+  // Tap on zone triggers file picker
+  uploadZone.addEventListener('click', (e) => {
+    if (e.target === removePhoto || removePhoto.contains(e.target)) return;
+    if (selectedFile) return;
+    fileInput.click();
+  });
+
   function handleFile(file) {
     if (!file) return;
     selectedFile = file;
@@ -706,7 +714,10 @@
     reader.readAsDataURL(file);
   }
 
-  fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) handleFile(file);
+  });
 
   removePhoto.addEventListener('click', (e) => {
     e.stopPropagation();
