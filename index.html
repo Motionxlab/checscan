@@ -32,7 +32,6 @@
     overflow-x: hidden;
   }
 
-  /* Ambient background */
   body::before {
     content: '';
     position: fixed;
@@ -65,7 +64,6 @@
     padding: 0 0 100px;
   }
 
-  /* Header */
   .header {
     padding: 24px 20px 16px;
     display: flex;
@@ -99,7 +97,6 @@
     margin-top: 2px;
   }
 
-  /* Pages */
   .page { display: none; animation: fadeIn 0.3s ease; }
   .page.active { display: block; }
 
@@ -108,7 +105,6 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* Upload Zone */
   .upload-zone {
     margin: 0 20px;
     border: 2px dashed var(--border);
@@ -187,10 +183,7 @@
     z-index: 10;
   }
 
-  /* Form Fields */
-  .section {
-    padding: 20px 20px 0;
-  }
+  .section { padding: 20px 20px 0; }
 
   .section-label {
     font-size: 11px;
@@ -221,38 +214,8 @@
   }
 
   .field::placeholder { color: var(--muted); }
-
   textarea.field { min-height: 90px; line-height: 1.5; }
 
-  /* User badge */
-  .user-badge {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--surface);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 12px 16px;
-  }
-
-  .avatar {
-    width: 36px;
-    height: 36px;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    font-weight: 700;
-    flex-shrink: 0;
-  }
-
-  .user-info span { display: block; }
-  .user-name { font-size: 14px; font-weight: 600; }
-  .user-sub { font-size: 12px; color: var(--muted); }
-
-  /* Submit Button */
   .submit-wrap {
     padding: 20px;
     position: fixed;
@@ -288,15 +251,8 @@
   .btn-submit:active { transform: translateY(0); }
   .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-  /* Loading State */
-  .loading-page {
-    padding: 60px 20px;
-    text-align: center;
-  }
-
-  .spinner-wrap {
-    margin-bottom: 32px;
-  }
+  .loading-page { padding: 60px 20px; text-align: center; }
+  .spinner-wrap { margin-bottom: 32px; }
 
   .receipt-anim {
     width: 80px;
@@ -339,11 +295,7 @@
     margin-bottom: 8px;
   }
 
-  .loading-sub {
-    color: var(--muted);
-    font-size: 14px;
-    line-height: 1.5;
-  }
+  .loading-sub { color: var(--muted); font-size: 14px; line-height: 1.5; }
 
   .steps {
     display: flex;
@@ -365,16 +317,8 @@
     transition: all 0.4s ease;
   }
 
-  .step.done {
-    border-color: var(--success);
-    background: rgba(34,211,165,0.08);
-  }
-
-  .step.active {
-    border-color: var(--accent);
-    background: rgba(108,99,255,0.08);
-  }
-
+  .step.done { border-color: var(--success); background: rgba(34,211,165,0.08); }
+  .step.active { border-color: var(--accent); background: rgba(108,99,255,0.08); }
   .step-icon { font-size: 18px; flex-shrink: 0; }
 
   .step-spinner {
@@ -389,13 +333,9 @@
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Result Page */
   .result-page { padding: 0 20px 20px; }
 
-  .result-header {
-    text-align: center;
-    padding: 32px 0 24px;
-  }
+  .result-header { text-align: center; padding: 32px 0 24px; }
 
   .success-icon {
     font-size: 56px;
@@ -506,7 +446,6 @@
 
   .btn-again:hover { border-color: var(--accent); color: var(--accent2); }
 
-  /* Error */
   .error-banner {
     margin: 0 20px;
     padding: 14px 16px;
@@ -523,7 +462,6 @@
 
   .error-banner.show { display: flex; }
 
-  /* Divider */
   .divider {
     height: 1px;
     background: var(--border);
@@ -553,15 +491,14 @@
 
     <div class="section" style="margin-top: 16px;">
       <div class="section-label">Фото чека</div>
-      <div class="upload-zone" id="upload-zone" style="cursor:pointer;">
+      <div class="upload-zone" id="upload-zone">
+        <input type="file" accept="image/*" id="file-input">
         <span class="upload-icon">📸</span>
         <h3>Сфотографировать чек</h3>
         <p>Или загрузить из галереи</p>
         <img class="preview-img" id="preview-img" style="display:none">
         <button class="remove-photo" id="remove-photo" style="display:none" type="button">✕</button>
       </div>
-      <!-- Hidden inputs outside the zone -->
-      <input type="file" accept="image/*" id="file-input" style="position:absolute;left:-9999px;opacity:0;width:1px;height:1px;">
     </div>
 
     <div class="section" style="margin-top: 16px;">
@@ -664,7 +601,6 @@
 </div>
 
 <script>
-  // Telegram WebApp init
   const tg = window.Telegram?.WebApp;
   if (tg) {
     tg.ready();
@@ -673,15 +609,8 @@
     tg.setBackgroundColor('#0a0a0f');
   }
 
-  // User info from Telegram
   const user = tg?.initDataUnsafe?.user;
-  if (user) {
-    const name = [user.first_name, user.last_name].filter(Boolean).join(' ');
-    document.getElementById('user-name').textContent = name;
-    document.getElementById('user-avatar').textContent = (user.first_name || 'U')[0].toUpperCase();
-  }
 
-  // State
   let selectedFile = null;
   let previewDataUrl = null;
 
@@ -689,13 +618,6 @@
   const uploadZone = document.getElementById('upload-zone');
   const previewImg = document.getElementById('preview-img');
   const removePhoto = document.getElementById('remove-photo');
-
-  // Tap on zone triggers file picker
-  uploadZone.addEventListener('click', (e) => {
-    if (e.target === removePhoto || removePhoto.contains(e.target)) return;
-    if (selectedFile) return;
-    fileInput.click();
-  });
 
   function handleFile(file) {
     if (!file) return;
@@ -710,6 +632,7 @@
       uploadZone.querySelector('.upload-icon').style.display = 'none';
       uploadZone.querySelector('h3').style.display = 'none';
       uploadZone.querySelector('p').style.display = 'none';
+      fileInput.style.display = 'none';
     };
     reader.readAsDataURL(file);
   }
@@ -734,16 +657,15 @@
     uploadZone.querySelector('.upload-icon').style.display = '';
     uploadZone.querySelector('h3').style.display = '';
     uploadZone.querySelector('p').style.display = '';
+    fileInput.style.display = '';
     fileInput.value = '';
   }
 
-  // Show/hide pages
   function showPage(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + id).classList.add('active');
   }
 
-  // Error banner
   function showError(msg) {
     const banner = document.getElementById('error-banner');
     document.getElementById('error-text').textContent = msg;
@@ -751,7 +673,6 @@
     setTimeout(() => banner.classList.remove('show'), 3500);
   }
 
-  // Loading steps animation
   function animateSteps() {
     const steps = [
       { id: 'step-1', delay: 0, duration: 1800 },
@@ -777,29 +698,17 @@
     });
   }
 
-  // Submit
   document.getElementById('btn-submit').addEventListener('click', async () => {
     const userName = document.getElementById('name-field').value.trim();
-    if (!userName) {
-      showError('Введите ваше имя');
-      return;
-    }
-
-    if (!selectedFile) {
-      showError('Добавьте фото чека');
-      return;
-    }
+    if (!userName) { showError('Введите ваше имя'); return; }
+    if (!selectedFile) { showError('Добавьте фото чека'); return; }
 
     const note = document.getElementById('note-field').value.trim();
-
     showPage('loading');
     animateSteps();
-
-    // Simulate API call (replace with real backend call)
     await simulateProcessing(note, userName);
   });
 
-  // ЗАМЕНИ на реальный URL после деплоя на Railway
   const BACKEND_URL = 'https://checkscan-production.up.railway.app';
 
   async function simulateProcessing(note, userName) {
@@ -845,16 +754,6 @@
     document.getElementById('note-field').value = '';
     showPage('form');
   });
-
-  function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-  function formatDate(d) {
-    return [
-      String(d.getDate()).padStart(2, '0'),
-      String(d.getMonth() + 1).padStart(2, '0'),
-      d.getFullYear()
-    ].join('.');
-  }
 </script>
 </body>
 </html>
