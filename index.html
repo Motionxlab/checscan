@@ -554,7 +554,7 @@
     <div class="section" style="margin-top: 16px;">
       <div class="section-label">Фото чека</div>
       <div class="upload-zone" id="upload-zone">
-        <input type="file" accept="image/*" capture="environment" id="file-input">
+        <input type="file" accept="image/*" id="file-input">
         <span class="upload-icon">📸</span>
         <h3>Сфотографировать чек</h3>
         <p>Или загрузить из галереи</p>
@@ -684,14 +684,12 @@
   let selectedFile = null;
   let previewDataUrl = null;
 
-  // File input
   const fileInput = document.getElementById('file-input');
   const uploadZone = document.getElementById('upload-zone');
   const previewImg = document.getElementById('preview-img');
   const removePhoto = document.getElementById('remove-photo');
 
-  fileInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
+  function handleFile(file) {
     if (!file) return;
     selectedFile = file;
     const reader = new FileReader();
@@ -701,13 +699,14 @@
       previewImg.style.display = 'block';
       removePhoto.style.display = 'flex';
       uploadZone.classList.add('has-image');
-      fileInput.style.display = 'none';
       uploadZone.querySelector('.upload-icon').style.display = 'none';
       uploadZone.querySelector('h3').style.display = 'none';
       uploadZone.querySelector('p').style.display = 'none';
     };
     reader.readAsDataURL(file);
-  });
+  }
+
+  fileInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
 
   removePhoto.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -721,11 +720,10 @@
     previewImg.style.display = 'none';
     removePhoto.style.display = 'none';
     uploadZone.classList.remove('has-image');
-    fileInput.style.display = '';
-    fileInput.value = '';
     uploadZone.querySelector('.upload-icon').style.display = '';
     uploadZone.querySelector('h3').style.display = '';
     uploadZone.querySelector('p').style.display = '';
+    fileInput.value = '';
   }
 
   // Show/hide pages
